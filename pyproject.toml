@@ -5,7 +5,9 @@ description = "MCP Server for Seattle Bus System"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "dotenv>=0.9.9",
     "mcp[cli]>=1.9.0",
+    "requests>=2.32.3",
 ]
 
 [project.scripts]
