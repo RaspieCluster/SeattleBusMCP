@@ -5,7 +5,8 @@ import requests
 
 from dotenv import load_dotenv
 import os
-
+ONE_BUS_AWAY_BASE_URL = "https://api.pugetsound.onebusaway.org/api"
+CURR_TIMESTAMP_API ="where/current-time.json"
 load_dotenv()
 one_bus_away_api_key = os.getenv('ONE_BUS_AWAY_API_KEY')
 mcp = FastMCP("One Bus Away MCP Server")
@@ -26,10 +27,11 @@ async def print_hello(input_name: str) -> str:
 
 @mcp.tool(description="MCP Tool to get the current time")
 async def get_current_time() -> Dict[str, Any]:
-    request_path = f"https://api.pugetsound.onebusaway.org/api/where/current-time.json?key={one_bus_away_api_key}"
+    
+    request_path = f"{ONE_BUS_AWAY_BASE_URL}/{CURR_TIMESTAMP_API}?key={one_bus_away_api_key}"
     response = requests.get(request_path)
     result = response.json()
-    print(f"{result}\n")
+    print(f"result: {result}")
     return result
     
 
