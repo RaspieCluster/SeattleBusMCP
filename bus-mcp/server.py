@@ -12,6 +12,14 @@ mcp = FastMCP("One Bus Away MCP Server")
 
 @mcp.tool(description="MCP Tool to print hello world")
 async def print_hello(input_name: str) -> str:
+    """Small MCP Tool
+
+    Args:
+        input_name (str): String to print out
+
+    Returns:
+        str: Greeting message
+    """
     print(f"Hello {input_name}!")
     print("Hello, world!")
     return f"Hello {input_name}!"

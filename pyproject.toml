@@ -8,8 +8,17 @@ dependencies = [
     "dotenv>=0.9.9",
     "mcp[cli]>=1.9.0",
     "requests>=2.32.3",
+    "uvicorn>=0.23.1",
+    "pydantic>=2.7.2",
+    "starlette>=0.27.0",
 ]
 
 [project.scripts]
 adx-mcp-server = "bus_mcp.main:run_server"
 
+[tool.hatch.build.targets.wheel]
+packages = ["bus-mcp"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
