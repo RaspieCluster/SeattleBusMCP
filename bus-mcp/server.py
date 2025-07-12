@@ -239,7 +239,7 @@ async def get_next_stop(stop_id, minutes_ahead = 60) ->set:
 # test bed
 if __name__ == "__main__":
     print("I am in here")
-    # asyncio.run(print_hello("This is a test"))
-    # asyncio.run(get_current_time())
+    asyncio.run(print_hello("This is a test"))
+    asyncio.run(get_current_time())
     asyncio.run(get_next_stop("1_75403"))
     mcp.run()
