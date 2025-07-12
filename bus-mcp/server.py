@@ -226,7 +226,7 @@ async def get_next_stop(stop_id, minutes_ahead = 60) ->set:
         "minutesAfter": minutes_ahead
     }
     result = make_one_bus_away_api_call(f"arrivals-and-departures-for-stop/{stop_id}.json", params)
-    write_file_path = f"{stop_id}_arrivals_and_departures.json"
+    write_file_path = f"random_files/{stop_id}_arrivals_and_departures.json"
     with open(write_file_path,"w") as f:
         json.dump(result,f)
     arrivalsAndDepartures = result["data"]["entry"]["arrivalsAndDepartures"]
