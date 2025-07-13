@@ -236,10 +236,47 @@ async def get_next_stop(stop_id, minutes_ahead = 60) ->set:
     print(next_stops)
     return next_stops  
 
+async def sample_get_next_stops(stop):
+    value = ""
+    if stop == "S":
+        value  = ["B", "A", "D"]
+    if stop == "A":
+        value = ["C","F","B"]
+    if stop == stop =="B":
+        value = ["E"]
+    if stop == stop =="C":
+        value = ["D"]
+    if stop == "D":
+        value = ["E"]
+    if stop == "F":
+        value = ["D"]
+    return value
+        
+async def find_path(start_stop, end_stop):
+    next_to_consider = [start_stop]
+    stops_to_here = {} #dict of stops to a set of all the stops that could get you to key_stop.
+    while next_to_consider:
+        stop  = next_to_consider.pop(0)
+        if stop == end_stop:
+            break
+        next_stops = sample_get_next_stops(stop)
+        for next_stop in next_stops:
+            if next_stop not in stops_to_here:
+                stops_to_here[next_stop] = set()
+            stops_to_here[next_stop].add(stop)
+            next_to_consider.append(next_stop)
+    print(stops_to_here)
+    # backtrack
+
+
+
+
 # test bed
 if __name__ == "__main__":
     print("I am in here")
-    asyncio.run(print_hello("This is a test"))
-    asyncio.run(get_current_time())
-    asyncio.run(get_next_stop("1_75403"))
+    # asyncio.run(print_hello("This is a test"))
+    # asyncio.run(get_current_time())
+    # asyncio.run(get_next_stop("1_75403"))
+    asyncio.run(find_path("S","E"))
     mcp.run()
+    
