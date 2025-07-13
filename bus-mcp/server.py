@@ -261,9 +261,7 @@ async def find_path(start_stop, end_stop):
         if stop in visited:
             continue
         print(f"curr_stop: {stop}\n")
-        if stop == end_stop:
-            break
-        next_stops = sample_get_next_stops(stop)
+        next_stops = await sample_get_next_stops(stop)
         for next_stop in next_stops:
             if next_stop not in stops_to_here:
                 stops_to_here[next_stop] = set()
