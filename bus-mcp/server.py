@@ -278,10 +278,10 @@ def backtrack(stops_to_here: Dict, start_stop,curr_stop):
         return [curr_stop]
     paths_from_here = []
     prev_stops = stops_to_here[curr_stop]
-    for stop in prev_stops:
-        routes__from_stop_to_here = backtrack(stops_to_here,start_stop,stop)
+    for prev_stop in prev_stops:
+        routes__from_stop_to_here = backtrack(stops_to_here,start_stop,prev_stop)
         for route in routes__from_stop_to_here:
-            full_path = route + stop
+            full_path = route + curr_stop
             paths_from_here.append(full_path)
     return paths_from_here
 
