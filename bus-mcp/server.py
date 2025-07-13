@@ -242,9 +242,9 @@ async def sample_get_next_stops(stop):
         value  = ["B", "A", "D"]
     if stop == "A":
         value = ["C","F","B"]
-    if stop == stop =="B":
+    if stop =="B":
         value = ["E"]
-    if stop == stop =="C":
+    if stop == "C":
         value = ["D"]
     if stop == "D":
         value = ["E"]
@@ -255,8 +255,12 @@ async def sample_get_next_stops(stop):
 async def find_path(start_stop, end_stop):
     next_to_consider = [start_stop]
     stops_to_here = {} #dict of stops to a set of all the stops that could get you to key_stop.
+    visited = set()
     while next_to_consider:
         stop  = next_to_consider.pop(0)
+        if stop in visited:
+            continue
+        print(f"curr_stop: {stop}\n")
         if stop == end_stop:
             break
         next_stops = sample_get_next_stops(stop)
@@ -265,7 +269,8 @@ async def find_path(start_stop, end_stop):
                 stops_to_here[next_stop] = set()
             stops_to_here[next_stop].add(stop)
             next_to_consider.append(next_stop)
-    print(stops_to_here)
+        visited.add(stop)
+    print(f"stops_to_here: {stops_to_here}\n")
     # backtrack
 
 
