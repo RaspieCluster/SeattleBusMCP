@@ -245,7 +245,7 @@ async def sample_get_next_stops(stop):
     if stop =="B":
         value = ["E"]
     if stop == "C":
-        value = ["D"]
+        value = ["E"]
     if stop == "D":
         value = ["E"]
     if stop == "F":
