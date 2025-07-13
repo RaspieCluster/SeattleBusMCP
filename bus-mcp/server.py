@@ -269,7 +269,21 @@ async def find_path(start_stop, end_stop):
             next_to_consider.append(next_stop)
         visited.add(stop)
     print(f"stops_to_here: {stops_to_here}\n")
+    paths  = backtrack(stops_to_here,"",start_stop,end_stop)
+    print(paths)
     # backtrack
+
+def backtrack(stops_to_here: Dict, route_so_far: str, start_stop,curr_stop):
+    if curr_stop ==  start_stop:
+        return
+    paths_from_here = []
+    prev_stops = stops_to_here[curr_stop]
+    for stop in prev_stops:
+        route_so_far_new = stop + "->" + route_so_far
+        full_routes = backtrack(stops_to_here,route_so_far_new,start_stop,stop)
+        paths_from_here.append(full_routes)
+    return paths_from_here
+
 
 
 
