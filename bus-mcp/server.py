@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional
 from mcp.server.fastmcp import FastMCP
 import asyncio
 import requests
+from geopy.distance import geodesic
 from dataclasses import dataclass
 from dotenv import load_dotenv
 import os
@@ -113,6 +114,7 @@ async def find_stops_near_location(lat: float, lon: float, radius: int = 500) ->
     Returns:
         Dict[str, Any]: List of bus stops within the search radius
     """
+    initial_location= Location(latitude=lat, longitude=lon)
     params = {
         "lat": lat,
         "lon": lon,
@@ -120,10 +122,23 @@ async def find_stops_near_location(lat: float, lon: float, radius: int = 500) ->
     }
     
     response = make_one_bus_away_api_call("stops-for-location.json", params)
+
+    # get data
+    stops = response.get("data", {}).get("list", [])
+
+    # formatted_stops
+    formatted_stops = [(stop["name"], Location(stop["lat"], stop["lon"])) for stop in stops]    
     
-    # TODO: distance calculation from the location to each stop?
+    # TODO: using geodesic distance, see if we need to modify this.
+    ditance_between_stops_response = [{
+        "initial_location": initial_location,
+        "stop_name": name,
+        "stop_location": location,
+        "distance_meters": geodesic((initial_location.latitude, initial_location.longitude), (location.latitude, location.longitude)).meters
+    } for name, location in formatted_stops]
     
-    return response
+    # response should have a name, lat, long, distance
+    return ditance_between_stops_response
     
 @mcp.tool(description="Get information about a bus stop")
 async def get_stop_details(stop_id: str) -> Dict[str, Any]:
