@@ -236,10 +236,65 @@ async def get_next_stop(stop_id, minutes_ahead = 60) ->set:
     print(next_stops)
     return next_stops  
 
+async def sample_get_next_stops(stop):
+    value = ""
+    if stop == "S":
+        value  = ["B", "A", "D"]
+    if stop == "A":
+        value = ["C","F","B"]
+    if stop =="B":
+        value = ["E"]
+    if stop == "C":
+        value = ["E"]
+    if stop == "D":
+        value = ["E"]
+    if stop == "F":
+        value = ["D"]
+    return value
+        
+async def find_path(start_stop, end_stop):
+    next_to_consider = [start_stop]
+    stops_to_here = {} #dict of stops to a set of all the stops that could get you to key_stop.
+    visited = set()
+    while next_to_consider:
+        stop  = next_to_consider.pop(0)
+        if stop in visited:
+            continue
+        print(f"curr_stop: {stop}\n")
+        next_stops = await sample_get_next_stops(stop)
+        for next_stop in next_stops:
+            if next_stop not in stops_to_here:
+                stops_to_here[next_stop] = set()
+            stops_to_here[next_stop].add(stop)
+            next_to_consider.append(next_stop)
+        visited.add(stop)
+    print(f"stops_to_here: {stops_to_here}\n")
+    paths  = backtrack(stops_to_here,start_stop,end_stop)
+    print(paths)
+    # backtrack
+
+def backtrack(stops_to_here: Dict, start_stop,curr_stop):
+    if curr_stop ==  start_stop:
+        return [curr_stop]
+    paths_from_here = []
+    prev_stops = stops_to_here[curr_stop]
+    for prev_stop in prev_stops:
+        routes__from_stop_to_here = backtrack(stops_to_here,start_stop,prev_stop)
+        for route in routes__from_stop_to_here:
+            full_path = route + curr_stop
+            paths_from_here.append(full_path)
+    return paths_from_here
+
+
+
+
+
 # test bed
 if __name__ == "__main__":
     print("I am in here")
-    asyncio.run(print_hello("This is a test"))
-    asyncio.run(get_current_time())
-    asyncio.run(get_next_stop("1_75403"))
+    # asyncio.run(print_hello("This is a test"))
+    # asyncio.run(get_current_time())
+    # asyncio.run(get_next_stop("1_75403"))
+    asyncio.run(find_path("S","E"))
     mcp.run()
+    
