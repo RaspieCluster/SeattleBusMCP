@@ -7,7 +7,7 @@ from geopy.distance import geodesic
 from dataclasses import dataclass
 from dotenv import load_dotenv
 import os
-
+import time
 # global variables
 ONE_BUS_AWAY_BASE_URL = "https://api.pugetsound.onebusaway.org/api"
 CURR_TIMESTAMP_API ="where/current-time.json"
@@ -236,9 +236,11 @@ async def get_current_time() -> Dict[str, Any]:
     return result
 
 @mcp.tool(description="MCP Tool to get the next bus stops from a provided bus stop_id in the Puget Sound, Washington Area")
-async def get_next_stop(stop_id, minutes_ahead = 60) ->set:
+async def get_next_stop(stop_id,milliseconds_since_epoch = int(time.time()*1000), minutes_ahead = 35, minutes_before = 0) ->set:
     params = {
-        "minutesAfter": minutes_ahead
+        "minutesBefore": minutes_before,
+        "minutesAfter": minutes_ahead,
+        "time": milliseconds_since_epoch
     }
     result = make_one_bus_away_api_call(f"arrivals-and-departures-for-stop/{stop_id}.json", params)
     write_file_path = f"random_files/{stop_id}_arrivals_and_departures.json"
@@ -309,7 +311,7 @@ if __name__ == "__main__":
     print("I am in here")
     # asyncio.run(print_hello("This is a test"))
     # asyncio.run(get_current_time())
-    # asyncio.run(get_next_stop("1_75403"))
-    asyncio.run(find_path("S","E"))
+    asyncio.run(get_next_stop("1_75403"))
+    # asyncio.run(find_path("S","E"))
     mcp.run()
     
